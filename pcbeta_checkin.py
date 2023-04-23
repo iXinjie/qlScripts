@@ -148,6 +148,3 @@ def pcbetaReply():
     else:
         return "没有此任务"
 
-if __name__ == "__main__":
-pcbetaCheckin()
-pcbetaReply()
