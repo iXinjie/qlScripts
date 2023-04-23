@@ -93,9 +93,9 @@ def getTaskID():
 def pcbetaReply():
     taskName = "回帖打卡福利"
     if taskName in newTaskRes:
-		# 获取任务id
-		global idd
-		idd = getTaskID()
+        # 获取任务id
+        global idd
+        idd = getTaskID()
 		# 申请回帖打卡任务
         reRes = requests.get(url=f"https://i.pcbeta.com/home.php?mod=task&do=apply&id={idd}", headers=pcHeaders)
         if "任务申请成功" in reRes.text:
