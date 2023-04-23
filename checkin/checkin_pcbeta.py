@@ -1,15 +1,20 @@
+"""
+cron: 0 0 8 ? * *
+new Env('远景论坛签到');
+"""
 import requests
 from datetime import datetime
 import time
 import re
 
+cookies = "jqCP_887f_saltkey=; jqCP_887f_auth="
 pcUrl = "https://i.pcbeta.com/home.php?mod=task&do=apply&id=149"
 pcHeaders = {
     "Host": "i.pcbeta.com",
     "Connection": "keep-alive",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-    "Cookie": "jqCP_887f_saltkey=n2kD4AS4; jqCP_887f_auth=8535AJOkXVhyljWVmCjMORgYVoOu287Hy2%2BVKtSXUuf%2F6pxD%2F1rYkTB7g13DfoA99YNSeM3RI%2FV3TDAg5FScF%2BuSS8pf"
+    "Cookie": cookies
 }
 
 pcbbsHeaders = {
@@ -17,7 +22,7 @@ pcbbsHeaders = {
     "Connection": "keep-alive",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-    "Cookie": "jqCP_887f_saltkey=n2kD4AS4; jqCP_887f_auth=8535AJOkXVhyljWVmCjMORgYVoOu287Hy2%2BVKtSXUuf%2F6pxD%2F1rYkTB7g13DfoA99YNSeM3RI%2FV3TDAg5FScF%2BuSS8pf"
+    "Cookie": cookies
 }
 
 
@@ -147,3 +152,6 @@ def pcbetaReply():
     else:
         return "没有此任务"
 
+if __name__ == "__main__":
+pcbetaCheckin()
+pcbetaReply()
