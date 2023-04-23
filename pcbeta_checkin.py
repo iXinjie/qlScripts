@@ -1,3 +1,7 @@
+"""
+cron: 0 0 8 ? * *
+new Env('远景论坛签到');
+"""
 import requests
 from datetime import datetime
 import time
@@ -148,3 +152,6 @@ def pcbetaReply():
     else:
         return "没有此任务"
 
+if __name__ == "__main__":
+	print(pcbetaReply())
+	print(pcbetaReply())
