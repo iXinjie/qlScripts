@@ -6,8 +6,9 @@ import requests
 from datetime import datetime
 import time
 import re
+import notify
 
-cookies = "jqCP_887f_saltkey=; jqCP_887f_auth="
+cookies = "jqCP_887f_saltkey=n2kD4AS4; jqCP_887f_auth=8535AJOkXVhyljWVmCjMORgYVoOu287Hy2%2BVKtSXUuf%2F6pxD%2F1rYkTB7g13DfoA99YNSeM3RI%2FV3TDAg5FScF%2BuSS8pf"
 pcUrl = "https://i.pcbeta.com/home.php?mod=task&do=apply&id=149"
 pcHeaders = {
     "Host": "i.pcbeta.com",
@@ -35,7 +36,7 @@ doneUrl = "https://i.pcbeta.com/home.php?mod=task&item=done"
 # 获取签到状态信息
 newTaskRes = requests.get(url=newUrl,headers=pcHeaders).text
 doneTaskRes = requests.get(url=doneUrl, headers=pcHeaders).text
-doingRes = requests.get("https://i.pcbeta.com/home.php?mod=task&item=doing",headers=pcHeaders)
+doingRes = requests.get("https://i.pcbeta.com/home.php?mod=task&item=doing",headers=pcHeaders).text
 
 
 def writeLog(file):
@@ -85,17 +86,16 @@ def getTaskUrl():
     replyUrl = f"https://bbs.pcbeta.com/forum.php?mod=post&action=reply&fid={fid}&tid={tid}&extra=page=1&replysubmit=yes&infloat=yes&handlekey=fastpost&inajax=1"
     return replyUrl,formhash
 
-def getTaskID():
-    news = requests.get(url=newUrl,headers=pcHeaders).text
-    idd = re.search('id=(.+?)">回帖打卡', news).group(1)
+def getTaskID(response):
+    global idd
+    idd = re.search('id=(.+?)">回帖打卡', response).group(1)
     return idd
 
 def pcbetaReply():
     taskName = "回帖打卡福利"
     if taskName in newTaskRes:
         # 获取任务id
-        global idd
-        idd = getTaskID()
+        idd = getTaskID(newTaskRes)
         # 申请回帖打卡任务
         reRes = requests.get(url=f"https://i.pcbeta.com/home.php?mod=task&do=apply&id={idd}", headers=pcHeaders)
         if "任务申请成功" in reRes.text:
@@ -127,7 +127,10 @@ def pcbetaReply():
     elif taskName in doneTaskRes:
         return "打卡已完成，重复打卡"
 
-    elif taskName in doingRes.text:
+    elif taskName in doingRes:
+        # 获取任务id
+        idd = getTaskID(doingRes)
+        # 获取帖子链接
         result = getTaskUrl()
         # 回复帖子
         data = {"message":"%C3%BF%C8%D5%B4%F2%BF%A8%C7%A9%B5%BD",
@@ -153,5 +156,5 @@ def pcbetaReply():
         return "没有此任务"
 
 if __name__ == "__main__":
-	print(pcbetaCheckin())
-	print(pcbetaReply())
+    msg = pcbetaCheckin() + "\n" + pcbetaReply()
+    notify.send("远景论坛打卡详情",msg)
