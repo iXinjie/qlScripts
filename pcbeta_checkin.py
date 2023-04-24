@@ -12,7 +12,7 @@ import notify
 
 def writeLog(file):
     time = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
-    with open(f"./log/pcBetalog-{time}.html", "w") as f:
+    with open(f"./pcBetalog-{time}.html", "w") as f:
         f.write(file)
 
 def pcbetaCheckin():
