@@ -6,37 +6,8 @@ import requests
 from datetime import datetime
 import time
 import re
+import os
 import notify
-
-cookies = "jqCP_887f_saltkey=n2kD4AS4; jqCP_887f_auth=8535AJOkXVhyljWVmCjMORgYVoOu287Hy2%2BVKtSXUuf%2F6pxD%2F1rYkTB7g13DfoA99YNSeM3RI%2FV3TDAg5FScF%2BuSS8pf"
-pcUrl = "https://i.pcbeta.com/home.php?mod=task&do=apply&id=149"
-pcHeaders = {
-    "Host": "i.pcbeta.com",
-    "Connection": "keep-alive",
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-    "Cookie": cookies
-}
-
-pcbbsHeaders = {
-    "Host": "bbs.pcbeta.com",
-    "Connection": "keep-alive",
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-    "Cookie": cookies
-}
-
-
-# 领取奖励链接
-lqurl = "https://i.pcbeta.com/home.php?mod=task&do=draw&id="
-# 获取新任务链接
-newUrl = "https://i.pcbeta.com/home.php?mod=task&item=new"
-# 查看已完成任务链接
-doneUrl = "https://i.pcbeta.com/home.php?mod=task&item=done"
-# 获取签到状态信息
-newTaskRes = requests.get(url=newUrl,headers=pcHeaders).text
-doneTaskRes = requests.get(url=doneUrl, headers=pcHeaders).text
-doingRes = requests.get("https://i.pcbeta.com/home.php?mod=task&item=doing",headers=pcHeaders).text
 
 
 def writeLog(file):
@@ -155,6 +126,39 @@ def pcbetaReply():
     else:
         return "没有此任务"
 
+
 if __name__ == "__main__":
-    msg = pcbetaCheckin() + "\n" + pcbetaReply()
-    notify.send("远景论坛打卡详情",msg)
+    if "PB_COOKIE" in os.environ :
+        cookies = os.environ["PB_COOKIE"]
+        pcUrl = "https://i.pcbeta.com/home.php?mod=task&do=apply&id=149"
+        pcHeaders = {
+            "Host": "i.pcbeta.com",
+            "Connection": "keep-alive",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+            "Cookie": cookies
+        }
+
+        pcbbsHeaders = {
+            "Host": "bbs.pcbeta.com",
+            "Connection": "keep-alive",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+            "Cookie": cookies
+        }
+
+        # 领取奖励链接
+        lqurl = "https://i.pcbeta.com/home.php?mod=task&do=draw&id="
+        # 获取新任务链接
+        newUrl = "https://i.pcbeta.com/home.php?mod=task&item=new"
+        # 查看已完成任务链接
+        doneUrl = "https://i.pcbeta.com/home.php?mod=task&item=done"
+        # 获取签到状态信息
+        newTaskRes = requests.get(url=newUrl,headers=pcHeaders).text
+        doneTaskRes = requests.get(url=doneUrl, headers=pcHeaders).text
+        doingRes = requests.get("https://i.pcbeta.com/home.php?mod=task&item=doing",headers=pcHeaders).text
+
+        msg = pcbetaCheckin() + "\n" + pcbetaReply()
+        notify.send("远景论坛打卡详情",msg)
+    else:
+        print("未添加cookie变量，退出")
