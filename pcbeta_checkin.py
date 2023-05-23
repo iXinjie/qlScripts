@@ -1,5 +1,5 @@
 """
-cron: 0 0 8 ? * *
+cron: 0 0 10 ? * *
 new Env('远景论坛签到');
 """
 import requests
