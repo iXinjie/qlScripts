@@ -89,10 +89,10 @@ if __name__ == "__main__":
         else:
             if login(hashes[0],hashes[1],username,password) is False:
                 msg = '账号登录失败'
+                print(f'{username}\n{password}')
             else:
                 msg = checkinfo() + checkin()
                 # 青龙通知推送
         send('MT论坛签到',msg)
     else:
         print('未添加"MT_BBS"变量，退出')
-		
