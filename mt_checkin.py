@@ -1,7 +1,6 @@
 '''
 cron:  0 8 * * *
-new Env('MT论坛签到');
-MT_BBS变量格式: 账号;密码   中间英文分号隔开
+new Env('MT论坛签到')
 '''
 import requests
 import re
@@ -29,7 +28,7 @@ def getLoginHashes():
         return False
     return loginhash,formhash
 
-def login(loginhash,formhash,u,p):
+def login(loginhash,formhash,u,p,loginfield = "username"):
     params = {
         'mod': 'logging',
         'action': 'login',
@@ -39,6 +38,7 @@ def login(loginhash,formhash,u,p):
     }
     data = {
         'formhash': formhash,
+        'loginfield': loginfield,
         'username': u,
         'password': p,
         'questionid': '0',
@@ -47,6 +47,8 @@ def login(loginhash,formhash,u,p):
     res = session.post(url=bbs_url,headers=headers,params=params,data=data)
     if '欢迎您回来' in res.text:
         print('登录成功')
+    elif "手机号登录成功" in res.text:
+        print('手机号登录成功')
     else:
         print("登录失败\n",res.text)
         return False
@@ -87,7 +89,11 @@ if __name__ == "__main__":
         if hashes is False:
             msg = 'hash获取失败'
         else:
-            if login(hashes[0],hashes[1],username,password) is False:
+            if "@" in username:
+                loginfield = "email"
+            else:
+                loginfield = "username"
+            if login(hashes[0],hashes[1],username,password,loginfield) is False:
                 msg = '账号登录失败'
                 print(f'{username}\n{password}')
             else:
