@@ -104,3 +104,4 @@ if __name__ == "__main__":
         send('MT论坛签到',msg)
     else:
         print('未添加"MT_BBS"变量，退出')
+		
