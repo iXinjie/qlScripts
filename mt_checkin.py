@@ -39,7 +39,6 @@ def login(loginhash,formhash,u,p):
     }
     data = {
         'formhash': formhash,
-        'loginfield': 'username',
         'username': u,
         'password': p,
         'questionid': '0',
