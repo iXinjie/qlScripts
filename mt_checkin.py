@@ -97,9 +97,9 @@ if __name__ == "__main__":
                 msg = '账号登录失败'
                 print(f'{username}\n{password}')
             else:
-				c = checkin()
-				info = checkinfo()
-                msg = c + info
+                c = checkin()
+                info = checkinfo()
+                msg = info + c
         # 青龙通知推送
         send('MT论坛签到',msg)
     else:
