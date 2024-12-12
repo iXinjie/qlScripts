@@ -36,6 +36,7 @@ def Login(phone,pwd):
         return response
 
 
+
 def zgSignIn(token):
     signInUrl = "https://api.qiumeiapp.com/zg-activity/zg-daily/zgSigninNew"
     headers = {
@@ -67,11 +68,12 @@ try:
         else:
             # print(f"专柜小程序签到:\n{zgRes}\n")
             content += f"专柜小程序签到:\n\n{zgRes}\n"
+        print(content)
         notify.send("薇诺娜签到",content)
     else:
-        # print("Token获取失败，签到未完成")
+        print("Token获取失败，签到未完成")
         notify.send("薇诺娜签到","Token获取失败，签到未完成")
 except:
     
     print("获取Token失败，签到未完成")
-    # notify.send("薇诺娜签到","Token获取失败，签到未完成")
+    notify.send("薇诺娜签到","Token获取失败，签到未完成")
