@@ -2,7 +2,7 @@
 ## 1、pcbeta签到
 #### 青龙拉库命令
 `ql repo https://github.com/iXinjie/qlScripts.git "pcbeta_" "" ""`  
-需在204行填写你的账号用户名，205行填写账号密码，有验证码的登录不了
+需抓"jqCP_887f_saltkey";"jqCP_887f_auth";"_ok_"值填写到脚本开头
 
 ## 2、mt签到
 #### 青龙拉库命令
