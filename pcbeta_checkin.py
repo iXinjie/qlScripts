@@ -8,7 +8,10 @@ import time
 import re
 import html
 import notify
+import subprocess
 
+# 填写对应cookie值
+cookies = "jqCP_887f_saltkey=;jqCP_887f_auth=;_ok1_="
 request = requests.session()
 
 # 回帖内容
@@ -18,58 +21,19 @@ pcUrl = "https://i.pcbeta.com/home.php?mod=task&do=apply&id=149"
 pcHeaders = {
     "Host": "i.pcbeta.com",
     "Connection": "keep-alive",
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+    "Cookie": cookies
 }
   
 pcbbsHeaders = {
     "Host": "bbs.pcbeta.com",
     "Connection": "keep-alive",
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+    "Cookie": cookies
 }
 
-
-def getToken(u,p):
-    loginUrl = "https://bbs.pcbeta.com/member.php?mod=logging&action=login"
-    loginPage = request.get(url=loginUrl,headers=pcHeaders).text
-    # 查找loginhash
-    loginhash = re.search(r'loginhash=(.+?)">', loginPage).group(1)
-    # 查找formhash
-    formhash = re.search(r'name="formhash" value="(.+?)" />', loginPage).group(1)
-
-    url = 'https://www.pcbeta.com/member.php?'
-    param = {
-        "mod": "logging",
-        "action": "login",
-        "loginsubmit": "yes",
-        "loginhash": loginhash,
-        "inajax": "1"
-    }
-    header = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
-        "Connection": "keep-alive",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "Accept-Encoding": "gzip, deflate, br, zstd",
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Referer": "https://www.pcbeta.com/member.php?mod=logging&action=login",
-        "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8"
-    }
-    data = {
-        "formhash": formhash,
-        "loginfield": "username",
-        "username": u,
-        "password": p
-    }
-    res = request.post(url=url,headers=header,data=data,params=param)
-    if "欢迎您回来" in res.text:
-        print("登录成功")
-        cookies = requests.utils.dict_from_cookiejar(request.cookies)
-        return cookies
-    else:
-        print("登录失败")
-        print(res.text)
-        return False
 
 # def convert_text(text):
 #     return ''.join([f'&#x{ord(char):04x};' if ord(char) > 127 else char for char in text])
@@ -201,9 +165,7 @@ def pcbetaReply():
         return "没有此任务"
   
 if __name__ == "__main__":
-    u = ''
-    p = ''
-    cookie = getToken(u,p)
+
     # 领取奖励链接
     lqurl = "https://i.pcbeta.com/home.php?mod=task&do=draw&id="
     # 获取新任务链接
@@ -221,4 +183,4 @@ if __name__ == "__main__":
     checkMsg = pcbetaCheckin()
     replyMsg = pcbetaReply()
     print(f"{checkMsg}\n{replyMsg}")
-    # notify.send("远景论坛签到",f"{checkMsg}\n{replyMsg}")
+    notify.send("远景论坛签到",f"{checkMsg}\n{replyMsg}")
