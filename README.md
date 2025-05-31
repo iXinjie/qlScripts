@@ -2,7 +2,7 @@
 ## 1、pcbeta签到
 #### 青龙拉库命令
 `ql repo https://github.com/iXinjie/qlScripts.git "pcbeta_" "" ""`  
-需抓"jqCP_887f_saltkey";"jqCP_887f_auth";"_ok_"值填写到脚本开头
+需抓"jqCP_887f_saltkey";"jqCP_887f_auth"的值填写到脚本开头
 
 ## 2、mt签到
 #### 青龙拉库命令
